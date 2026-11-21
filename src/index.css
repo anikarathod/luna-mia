@@ -1,0 +1,17 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html { scroll-behavior: smooth; }
+body { @apply bg-cream text-espresso font-sans antialiased; }
+
+.btn-primary {
+  @apply bg-chocolate text-cream px-7 py-3 rounded-full tracking-wide text-sm
+         hover:bg-espresso transition-colors duration-300;
+}
+.btn-outline {
+  @apply border border-chocolate text-chocolate px-7 py-3 rounded-full text-sm
+         hover:bg-chocolate hover:text-cream transition-colors duration-300;
+}
+.gold-line { @apply w-16 h-px bg-champagne mx-auto my-4; }
