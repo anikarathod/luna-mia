@@ -5,7 +5,7 @@ import SectionHeading from "../components/SectionHeading";
 import CategoryCard from "../components/CategoryCard";
 import ProductCard from "../components/ProductCard";
 import { generalEnquiryLink } from "../lib/enquiry";
-import Hero3D from "../components/Hero3D"; // <-- Added 3D Component
+import Box3D from "../components/Box3D"; // <-- Changed to the new 3D Box
 
 export default function Home() {
   const [content, setContent] = useState(null);
@@ -32,37 +32,24 @@ export default function Home() {
   return (
     <>
       {/* HERO */}
-      <section className="relative min-h-[65vh] md:min-h-[85vh] flex items-center justify-center text-center px-4 overflow-hidden">
+      <section className="relative min-h-[65vh] md:min-h-[85vh] flex flex-col items-center justify-center text-center px-4 overflow-hidden bg-gradient-to-b from-[#F6F0E7] to-[#E6D8C8]">
         
-        {/* Animated Background Image */}
-        {content?.hero_image_url ? (
-          <img 
-            src={content.hero_image_url} 
-            alt="Luxury Hampers" 
-            className="absolute inset-0 w-full h-full object-cover animate-ken-burns" 
-          />
-        ) : (
-          <div className="absolute inset-0 bg-gradient-to-br from-beige via-rose/40 to-champagne/30 animate-ken-burns" />
-        )}
-        
-        {/* Dark Overlay for text readability */}
-        <div className="absolute inset-0 bg-gradient-to-b from-espresso/70 via-espresso/40 to-espresso/70" />
+        {/* 3D Floating Box */}
+        <Box3D />
 
-        {/* 3D Floating Gold Particles */}
-        <Hero3D />
-
-        <div className="relative z-10 max-w-3xl mt-6 md:mt-10">
-          <p className="text-champagne tracking-[0.5em] text-[10px] md:text-xs mb-4 md:mb-6 animate-slide-up font-medium">
+        {/* Text Content */}
+        <div className="relative z-10 max-w-3xl mt-6 md:mt-10 pointer-events-none">
+          <p className="text-chocolate tracking-[0.5em] text-[10px] md:text-xs mb-4 md:mb-6 animate-slide-up font-medium">
             LUNA MIA
           </p>
-          <h1 className="font-serif text-3xl md:text-7xl text-cream leading-[1.2] md:leading-[1.1] animate-slide-up delay-100">
+          <h1 className="font-serif text-4xl md:text-7xl text-chocolate leading-[1.2] md:leading-[1.1] animate-slide-up delay-100">
             {content?.hero_heading || "Thoughtful Gifts. Beautiful Moments."}
           </h1>
-          <p className="text-cream/90 text-sm md:text-xl mt-4 md:mt-6 max-w-xl mx-auto font-light leading-relaxed animate-slide-up delay-200 px-4">
+          <p className="text-espresso/80 text-sm md:text-xl mt-4 md:mt-6 max-w-xl mx-auto font-light leading-relaxed animate-slide-up delay-200 px-4">
             {content?.hero_subtext || "Curated luxury gift hampers, handcrafted with love for every celebration and everyday surprise."}
           </p>
-          <div className="mt-6 md:mt-10 animate-slide-up delay-300">
-            <Link to="/shop" className="inline-block bg-champagne text-espresso px-6 py-3 md:px-10 md:py-4 rounded-full text-[11px] md:text-sm tracking-widest uppercase hover:bg-cream hover:-translate-y-1 transition-all duration-300 shadow-xl">
+          <div className="mt-6 md:mt-10 animate-slide-up delay-300 pointer-events-auto">
+            <Link to="/shop" className="inline-block bg-chocolate text-cream px-6 py-3 md:px-10 md:py-4 rounded-full text-[11px] md:text-sm tracking-widest uppercase hover:bg-espresso hover:-translate-y-1 transition-all duration-300 shadow-xl">
               Explore Our Collection
             </Link>
           </div>
