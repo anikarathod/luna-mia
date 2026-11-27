@@ -1,10 +1,12 @@
+import { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
-import { Analytics } from "@vercel/analytics/react"; // Added Analytics
+import { Analytics } from "@vercel/analytics/react";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import EmailButton from "./components/EmailButton";
 import ProtectedRoute from "./components/ProtectedRoute";
+import GiftIntro from "./components/GiftIntro"; // <-- Import the intro
 
 // Public Pages
 import Home from "./pages/Home";
@@ -26,37 +28,44 @@ import Gallery from "./pages/admin/Gallery";
 import HomepageManager from "./pages/admin/HomepageManager";
 
 export default function App() {
+  const [showIntro, setShowIntro] = useState(true);
+
   return (
     <AuthProvider>
-      <BrowserRouter>
-        <Routes>
-          {/* Public Routes */}
-          <Route path="/" element={<><Navbar /><Home /><Footer /><EmailButton /></>} />
-          <Route path="/shop" element={<><Navbar /><Shop /><Footer /><EmailButton /></>} />
-          <Route path="/collections" element={<><Navbar /><Collections /><Footer /><EmailButton /></>} />
-          <Route path="/product/:id" element={<><Navbar /><ProductDetails /><Footer /><EmailButton /></>} />
-          <Route path="/custom" element={<><Navbar /><CustomHampers /><Footer /><EmailButton /></>} />
-          <Route path="/about" element={<><Navbar /><About /><Footer /><EmailButton /></>} />
-          <Route path="/contact" element={<><Navbar /><Contact /><Footer /><EmailButton /></>} />
+      {/* Show the Gift Intro overlay */}
+      {showIntro && <GiftIntro onComplete={() => setShowIntro(false)} />}
 
-          {/* Admin Login */}
-          <Route path="/admin/login" element={<Login />} />
+      {/* The main website (hidden under the intro until it opens) */}
+      <div className={showIntro ? "h-screen overflow-hidden" : ""}>
+        <BrowserRouter>
+          <Routes>
+            {/* Public Routes */}
+            <Route path="/" element={<><Navbar /><Home /><Footer /><EmailButton /></>} />
+            <Route path="/shop" element={<><Navbar /><Shop /><Footer /><EmailButton /></>} />
+            <Route path="/collections" element={<><Navbar /><Collections /><Footer /><EmailButton /></>} />
+            <Route path="/product/:id" element={<><Navbar /><ProductDetails /><Footer /><EmailButton /></>} />
+            <Route path="/custom" element={<><Navbar /><CustomHampers /><Footer /><EmailButton /></>} />
+            <Route path="/about" element={<><Navbar /><About /><Footer /><EmailButton /></>} />
+            <Route path="/contact" element={<><Navbar /><Contact /><Footer /><EmailButton /></>} />
 
-          {/* Protected Admin Routes */}
-          <Route path="/admin" element={<ProtectedRoute><Dashboard /></ProtectedRoute>}>
-            <Route index element={null} />
-            <Route path="products" element={<Products />} />
-            <Route path="products/new" element={<ProductForm />} />
-            <Route path="products/edit/:id" element={<ProductForm />} />
-            <Route path="categories" element={<Categories />} />
-            <Route path="homepage" element={<HomepageManager />} />
-            <Route path="gallery" element={<Gallery />} />
-            <Route path="enquiries" element={<Enquiries />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
+            {/* Admin Login */}
+            <Route path="/admin/login" element={<Login />} />
+
+            {/* Protected Admin Routes */}
+            <Route path="/admin" element={<ProtectedRoute><Dashboard /></ProtectedRoute>}>
+              <Route index element={null} />
+              <Route path="products" element={<Products />} />
+              <Route path="products/new" element={<ProductForm />} />
+              <Route path="products/edit/:id" element={<ProductForm />} />
+              <Route path="categories" element={<Categories />} />
+              <Route path="homepage" element={<HomepageManager />} />
+              <Route path="gallery" element={<Gallery />} />
+              <Route path="enquiries" element={<Enquiries />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </div>
       
-      {/* Vercel Analytics Component */}
       <Analytics />
     </AuthProvider>
   );
