@@ -5,6 +5,7 @@ import SectionHeading from "../components/SectionHeading";
 import CategoryCard from "../components/CategoryCard";
 import ProductCard from "../components/ProductCard";
 import { generalEnquiryLink } from "../lib/enquiry";
+import Hero3D from "../components/Hero3D"; // <-- Added 3D Component
 
 export default function Home() {
   const [content, setContent] = useState(null);
@@ -46,7 +47,10 @@ export default function Home() {
         
         {/* Dark Overlay for text readability */}
         <div className="absolute inset-0 bg-gradient-to-b from-espresso/70 via-espresso/40 to-espresso/70" />
-        
+
+        {/* 3D Floating Gold Particles */}
+        <Hero3D />
+
         <div className="relative z-10 max-w-3xl mt-6 md:mt-10">
           <p className="text-champagne tracking-[0.5em] text-[10px] md:text-xs mb-4 md:mb-6 animate-slide-up font-medium">
             LUNA MIA
