@@ -3,7 +3,7 @@ import { useNavigate, useParams, Link } from "react-router-dom";
 import { supabase } from "../../lib/supabase";
 
 export default function ProductForm() {
-  const { id } = useParams(); // if 'id' exists, we are editing
+  const { id } = useParams();
   const navigate = useNavigate();
   const isEditing = Boolean(id);
 
@@ -11,13 +11,12 @@ export default function ProductForm() {
   const [saving, setSaving] = useState(false);
   const [categories, setCategories] = useState([]);
   
-  // Form State
   const [form, setForm] = useState({
     name: "",
     price: "",
     description: "",
     category_id: "",
-    included_items: "", // We'll split this by comma later
+    included_items: "",
     customisation_options: "",
     packaging_info: "",
     available: true,
@@ -25,18 +24,15 @@ export default function ProductForm() {
     is_bestseller: false,
   });
 
-  // Images State
   const [existingImages, setExistingImages] = useState([]);
   const [newImageFiles, setNewImageFiles] = useState([]);
   const [imagePreviews, setImagePreviews] = useState([]);
 
   useEffect(() => {
-    // Fetch categories for the dropdown
     supabase.from("categories").select("id, name").then(({ data }) => {
       setCategories(data || []);
     });
 
-    // If editing, fetch the product data
     if (isEditing) {
       supabase.from("products").select("*, product_images(*)").eq("id", id).single()
         .then(({ data }) => {
@@ -63,8 +59,6 @@ export default function ProductForm() {
   function handleImageSelect(e) {
     const files = Array.from(e.target.files);
     setNewImageFiles((prev) => [...prev, ...files]);
-    
-    // Create local preview URLs
     const previews = files.map((file) => URL.createObjectURL(file));
     setImagePreviews((prev) => [...prev, ...previews]);
   }
@@ -74,7 +68,6 @@ export default function ProductForm() {
     setSaving(true);
 
     try {
-      // 1. Save Product Data
       const productData = {
         name: form.name,
         price: Number(form.price),
@@ -91,35 +84,36 @@ export default function ProductForm() {
       let productId = id;
 
       if (isEditing) {
-        await supabase.from("products").update(productData).eq("id", id);
+        const { error } = await supabase.from("products").update(productData).eq("id", id);
+        if (error) throw error;
       } else {
-        const { data } = await supabase.from("products").insert([productData]).select().single();
+        const { data, error } = await supabase.from("products").insert([productData]).select().single();
+        if (error) throw error;
+        if (!data) throw new Error("Could not save product. Check database permissions.");
         productId = data.id;
       }
 
-      // 2. Upload New Images
       if (newImageFiles.length > 0) {
         for (let i = 0; i < newImageFiles.length; i++) {
           const file = newImageFiles[i];
           const fileExt = file.name.split('.').pop();
           const fileName = `${productId}-${Math.random()}.${fileExt}`;
           
-          // Upload to Supabase Storage bucket 'products'
           const { error: uploadError } = await supabase.storage
             .from("products")
             .upload(fileName, file);
             
           if (uploadError) throw uploadError;
 
-          // Get public URL
           const { data: urlData } = supabase.storage.from("products").getPublicUrl(fileName);
 
-          // Save image record to database
-          await supabase.from("product_images").insert([{
+          const { error: imgError } = await supabase.from("product_images").insert([{
             product_id: productId,
             image_url: urlData.publicUrl,
             display_order: existingImages.length + i
           }]);
+          
+          if (imgError) throw imgError;
         }
       }
 
@@ -133,7 +127,6 @@ export default function ProductForm() {
 
   async function removeExistingImage(imgId, url) {
     if (!window.confirm("Remove this image?")) return;
-    // Extract filename from URL to delete from storage
     const fileName = url.split('/').pop();
     await supabase.storage.from("products").remove([fileName]);
     await supabase.from("product_images").delete().eq("id", imgId);
@@ -144,14 +137,13 @@ export default function ProductForm() {
 
   return (
     <div className="p-8 max-w-4xl mx-auto">
-      <Link to="/admin/products" className="text-champagne text-sm mb-4 inline-block">← Back to Products</Link>
+      <Link to="/admin/products" className="text-champagne text-sm mb-4 inline-block hover:text-chocolate">← Back to Products</Link>
       <h1 className="font-serif text-3xl text-chocolate mb-8">
         {isEditing ? "Edit Product" : "Add New Product"}
       </h1>
 
       <form onSubmit={handleSubmit} className="bg-white p-8 rounded-2xl shadow-soft space-y-6">
         
-        {/* Basic Info */}
         <div className="grid md:grid-cols-2 gap-6">
           <div>
             <label className="block text-sm text-chocolate mb-1">Product Name</label>
@@ -176,7 +168,6 @@ export default function ProductForm() {
           <textarea required name="description" value={form.description} onChange={handleChange} rows="3" className="w-full border border-champagne/40 rounded-lg px-4 py-2 focus:outline-none focus:border-chocolate"></textarea>
         </div>
 
-        {/* Details */}
         <div>
           <label className="block text-sm text-chocolate mb-1">What's Inside (comma separated)</label>
           <input name="included_items" value={form.included_items} onChange={handleChange} placeholder="e.g. Candle, Chocolates, Dried Flowers" className="w-full border border-champagne/40 rounded-lg px-4 py-2 focus:outline-none focus:border-chocolate" />
@@ -193,7 +184,6 @@ export default function ProductForm() {
           </div>
         </div>
 
-        {/* Toggles */}
         <div className="flex gap-6 py-4 border-y border-beige">
           <label className="flex items-center gap-2 cursor-pointer">
             <input type="checkbox" name="available" checked={form.available} onChange={handleChange} className="w-4 h-4 accent-chocolate" />
@@ -209,11 +199,9 @@ export default function ProductForm() {
           </label>
         </div>
 
-        {/* Images */}
         <div>
           <label className="block text-sm text-chocolate mb-2">Product Images</label>
           
-          {/* Existing Images */}
           {existingImages.length > 0 && (
             <div className="flex gap-4 mb-4 flex-wrap">
               {existingImages.map(img => (
@@ -225,7 +213,6 @@ export default function ProductForm() {
             </div>
           )}
 
-          {/* New Image Previews */}
           {imagePreviews.length > 0 && (
             <div className="flex gap-4 mb-4 flex-wrap">
               {imagePreviews.map((url, i) => (
