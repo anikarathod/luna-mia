@@ -7,13 +7,13 @@ export default function ProductCard({ product }) {
   return (
     <div className="group bg-white rounded-2xl overflow-hidden shadow-soft hover:shadow-lg transition-all duration-300 flex flex-col h-full">
       {/* Image Container - Fixed height on mobile, aspect ratio on desktop */}
-      <Link to={`/product/${product.id}`} className="block h-48 md:h-72 w-full overflow-hidden bg-beige relative">
+      <Link to={`/product/${product.id}`} className="block h-48 md:h-72 w-full overflow-hidden bg-cream relative">
         {img ? (
           <img
             src={img}
             alt={product.name}
             loading="lazy"
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+            className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-700"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-espresso/30 font-serif text-sm">No image</div>
