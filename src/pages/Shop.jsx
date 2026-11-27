@@ -31,9 +31,10 @@ export default function Shop() {
   }, [activeCat]);
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-16">
+    <div className="max-w-7xl mx-auto px-4 md:px-6 py-12 md:py-16">
       <SectionHeading eyebrow="THE COLLECTION" title="Our Gift Hampers" />
-      <div className="flex flex-wrap gap-2 justify-center mb-10">
+      
+      <div className="flex flex-wrap gap-2 justify-center mb-8 md:mb-10">
         <button
           onClick={() => setParams({})}
           className={`px-4 py-2 rounded-full text-xs border transition ${!activeCat ? "bg-chocolate text-cream border-chocolate" : "border-chocolate/40 text-chocolate hover:bg-chocolate/5"}`}
@@ -56,7 +57,7 @@ export default function Shop() {
       ) : products.length === 0 ? (
         <p className="text-center text-espresso/60 py-20">No hampers in this collection yet.</p>
       ) : (
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">
           {products.map((p) => <ProductCard key={p.id} product={p} />)}
         </div>
       )}
