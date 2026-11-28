@@ -5,15 +5,13 @@ export default function GiftIntro({ onComplete }) {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    // Wait 2 seconds so the user can admire the 3D box
     const timer = setTimeout(() => {
       setIsOpen(true);
     }, 2000);
 
-    // Finish after the lid opens and fades
     const completeTimer = setTimeout(() => {
       onComplete();
-    }, 3500);
+    }, 3200);
 
     return () => {
       clearTimeout(timer);
@@ -24,80 +22,62 @@ export default function GiftIntro({ onComplete }) {
   return (
     <AnimatePresence>
       <motion.div
-        className="fixed inset-0 z-[999] flex items-center justify-center overflow-hidden bg-[#E6D8C8]"
+        className="fixed inset-0 z-[999] flex items-center justify-center overflow-hidden pointer-events-none"
+        style={{
+          background: "radial-gradient(circle at center, #68482E 0%, #2A1B12 100%)",
+        }}
         initial={{ opacity: 1 }}
-        animate={isOpen ? { opacity: 0, filter: "blur(10px)" } : { opacity: 1, filter: "blur(0px)" }}
-        transition={{ duration: 1.5, ease: "easeInOut", delay: 0.5 }}
+        animate={isOpen ? { opacity: 0, scale: 1.05, filter: "blur(10px)" } : { opacity: 1, scale: 1, filter: "blur(0px)" }}
+        transition={{ duration: 1.2, ease: [0.76, 0, 0.24, 1] }}
       >
-        {/* Background Texture (Cream linen feel) */}
-        <div className="absolute inset-0 opacity-40 mix-blend-multiply" style={{ backgroundImage: "url('https://www.transparenttextures.com/patterns/cream-paper.png')" }} />
+        {/* Background Texture */}
+        <div className="absolute inset-0 opacity-15 mix-blend-overlay" style={{ backgroundImage: "url('https://www.transparenttextures.com/patterns/black-paper.png')" }} />
 
-        {/* 3D Gift Box Container */}
+        {/* REALISTIC SILK RIBBON */}
         <motion.div
-          className="relative w-64 h-64 md:w-80 md:h-80"
-          style={{ perspective: "1000px" }}
-          animate={isOpen ? { y: 100, opacity: 0 } : { y: 0, opacity: 1 }}
-          transition={{ duration: 1, ease: "easeInOut" }}
+          className="absolute top-0 w-16 md:w-24 h-full"
+          style={{
+            // 5-stop gradient to simulate light hitting the folds of the silk
+            background: "linear-gradient(90deg, #4a3220 0%, #8c6c3e 15%, #C6A36A 35%, #f4e4c1 50%, #C6A36A 65%, #8c6c3e 85%, #4a3220 100%)",
+            boxShadow: "0 0 50px rgba(0,0,0,0.8), inset 0 0 15px rgba(0,0,0,0.4)",
+            borderLeft: "1px solid rgba(255,255,255,0.05)",
+            borderRight: "1px solid rgba(255,255,255,0.05)"
+          }}
+          initial={{ opacity: 1 }}
+          animate={isOpen ? { opacity: 0, scaleY: 1.2 } : { opacity: 1, scaleY: 1 }}
+          transition={{ duration: 0.8, ease: "easeIn" }}
+        />
+
+        {/* GOLD WAX SEAL */}
+        <motion.div
+          className="relative z-10 flex items-center justify-center w-48 h-48 md:w-64 md:h-64"
+          initial={{ opacity: 1, scale: 1 }}
+          animate={isOpen ? { opacity: 0, scale: 1.5 } : { opacity: 1, scale: 1 }}
+          transition={{ duration: 1, ease: "easeOut" }}
         >
-          {/* THE BOX BASE */}
-          <div 
-            className="absolute bottom-0 w-full h-48 md:h-60 bg-[#68482E] rounded-sm shadow-2xl"
+          {/* Spinning Outer Ring */}
+          <motion.div 
+            className="absolute inset-0 rounded-full border border-dashed border-[#C6A36A]/40"
+            animate={{ rotate: 360 }}
+            transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+          />
+
+          {/* Metallic Gold Seal */}
+          <div
+            className="relative z-10 flex flex-col items-center justify-center rounded-full w-40 h-40 md:w-56 md:h-56"
             style={{
-              boxShadow: "inset 0 -20px 40px rgba(0,0,0,0.5), 0 30px 40px rgba(0,0,0,0.3)",
-              background: "linear-gradient(135deg, #7a5738 0%, #4a3220 100%)"
+              background: "radial-gradient(circle at 35% 35%, #fdf0d5 0%, #C6A36A 40%, #8c6c3e 100%)",
+              boxShadow: "0 25px 50px rgba(0,0,0,0.8), inset 0 0 20px rgba(255,255,255,0.5)"
             }}
           >
-            {/* Ribbon wrapping around the box (Vertical) */}
-            <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-8 md:w-12 bg-gradient-to-r from-[#b08d57] via-[#C6A36A] to-[#a88755] shadow-lg opacity-90" />
-            {/* Ribbon wrapping around the box (Horizontal) */}
-            <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 h-8 md:h-12 bg-gradient-to-b from-[#b08d57] via-[#C6A36A] to-[#a88755] shadow-lg opacity-90" />
-          </div>
-
-          {/* THE LID */}
-          <motion.div
-            className="absolute top-10 w-[110%] -left-[5%] h-16 md:h-20 bg-[#68482E] rounded-sm z-10 shadow-xl"
-            style={{
-              background: "linear-gradient(135deg, #7a5738 0%, #4a3220 100%)",
-              boxShadow: "inset 0 5px 10px rgba(255,255,255,0.1), 0 10px 20px rgba(0,0,0,0.4)"
-            }}
-            animate={isOpen ? { y: -200, rotateZ: -10, opacity: 0 } : { y: 0, rotateZ: 0, opacity: 1 }}
-            transition={{ duration: 1, ease: "easeOut" }}
-          >
-            {/* Lid Ribbon */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-8 md:w-12 h-full bg-gradient-to-r from-[#b08d57] via-[#C6A36A] to-[#a88755] opacity-90" />
-            </div>
-          </motion.div>
-
-          {/* THE RIBBON BOW (Floating on top of the lid) */}
-          <motion.div
-            className="absolute top-0 left-1/2 -translate-x-1/2 z-20 flex justify-center items-center w-32 h-20"
-            animate={isOpen ? { y: -200, opacity: 0 } : { y: 0, opacity: 1 }}
-            transition={{ duration: 1, ease: "easeOut" }}
-          >
-            {/* Left Loop */}
-            <div className="absolute w-14 h-10 bg-gradient-to-tr from-[#8c6c3e] via-[#C6A36A] to-[#f4e4c1] rounded-[100%] rotate-[-20deg] shadow-lg border border-[#a88755]/50" />
-            {/* Right Loop */}
-            <div className="absolute w-14 h-10 bg-gradient-to-tl from-[#8c6c3e] via-[#C6A36A] to-[#f4e4c1] rounded-[100%] rotate-[20deg] shadow-lg border border-[#a88755]/50" />
-            {/* Center Knot */}
-            <div className="absolute w-6 h-8 bg-gradient-to-b from-[#C6A36A] to-[#8c6c3e] rounded-md z-30 shadow-inner" />
+            <h1 className="font-serif text-2xl md:text-4xl tracking-[0.25em] text-[#2A1B12] font-medium ml-2 drop-shadow-sm">LUNA</h1>
+            <div className="w-12 h-px bg-[#2A1B12]/30 my-2 md:my-3"></div>
+            <h1 className="font-serif text-2xl md:text-4xl tracking-[0.25em] text-[#2A1B12] font-medium ml-2 drop-shadow-sm">MIA</h1>
             
-            {/* Ribbon Tails Hanging Down */}
-            <div className="absolute top-6 left-2 w-4 h-16 bg-gradient-to-b from-[#C6A36A] to-[#8c6c3e] rotate-[15deg] rounded-b-sm shadow-md" />
-            <div className="absolute top-6 right-2 w-4 h-16 bg-gradient-to-b from-[#C6A36A] to-[#8c6c3e] rotate-[-15deg] rounded-b-sm shadow-md" />
-          </motion.div>
+            {/* Inner embossed ring */}
+            <div className="absolute inset-2 md:inset-3 rounded-full border border-[#2A1B12]/10 shadow-[inset_0_2px_4px_rgba(255,255,255,0.5)]" />
+          </div>
         </motion.div>
-
-        {/* Minimalist Logo below the box */}
-        <motion.div 
-          className="absolute bottom-20 text-center"
-          animate={isOpen ? { opacity: 0 } : { opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          <h1 className="font-serif text-2xl md:text-3xl tracking-[0.4em] text-[#68482E] mb-2 font-medium ml-2">LUNA MIA</h1>
-          <p className="text-[#C6A36A] text-[10px] tracking-[0.3em] uppercase">A Little Luxury</p>
-        </motion.div>
-
       </motion.div>
     </AnimatePresence>
   );
