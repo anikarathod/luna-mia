@@ -44,8 +44,8 @@ export default function Home() {
           <div className="absolute inset-0 bg-gradient-to-br from-beige via-rose/40 to-champagne/30 animate-ken-burns" />
         )}
         
-        {/* Dark Overlay for text readability */}
-        <div className="absolute inset-0 bg-gradient-to-b from-espresso/70 via-espresso/40 to-espresso/70" />
+        {/* Soft radial glow instead of heavy black overlay */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(48,37,31,0.7)_0%,rgba(48,37,31,0.2)_70%)]" />
         
         <div className="relative z-10 max-w-3xl mt-6 md:mt-10">
           <p className="text-champagne tracking-[0.5em] text-[10px] md:text-xs mb-4 md:mb-6 animate-slide-up font-medium">
@@ -58,8 +58,9 @@ export default function Home() {
             {content?.hero_subtext || "Curated luxury gift hampers, handcrafted with love for every celebration and everyday surprise."}
           </p>
           <div className="mt-6 md:mt-10 animate-slide-up delay-300">
-            <Link to="/shop" className="inline-block bg-champagne text-espresso px-6 py-3 md:px-10 md:py-4 rounded-full text-[11px] md:text-sm tracking-widest uppercase hover:bg-cream hover:-translate-y-1 transition-all duration-300 shadow-xl">
+            <Link to="/shop" className="group inline-block bg-champagne text-espresso pl-8 pr-6 py-3 md:pl-10 md:pr-8 md:py-4 rounded-full text-[11px] md:text-sm tracking-widest uppercase hover:bg-cream transition-all duration-300 shadow-xl hover:-translate-y-1 font-medium">
               Explore Our Collection
+              <span className="inline-block ml-2 group-hover:translate-x-1 transition-transform">→</span>
             </Link>
           </div>
         </div>
@@ -96,6 +97,22 @@ export default function Home() {
           </div>
         </section>
       )}
+
+      {/* MARQUEE STRIP */}
+      <div className="bg-chocolate py-4 overflow-hidden border-y border-champagne/30">
+        <div className="flex whitespace-nowrap animate-[marquee_20s_linear_infinite]">
+          {[...Array(4)].map((_, i) => (
+            <div key={i} className="flex items-center gap-6 px-4 text-champagne text-[10px] md:text-xs tracking-[0.3em] uppercase font-medium">
+              <span>Handcrafted with Love</span>
+              <span className="text-cream/30 text-lg">✦</span>
+              <span>Premium Quality</span>
+              <span className="text-cream/30 text-lg">✦</span>
+              <span>Perfect for Every Occasion</span>
+              <span className="text-cream/30 text-lg">✦</span>
+            </div>
+          ))}
+        </div>
+      </div>
 
       {/* CUSTOM PROMO - Full Width Banner */}
       <section className="relative min-h-[400px] md:min-h-[600px] flex items-center animate-fade-up overflow-hidden">
@@ -138,15 +155,35 @@ export default function Home() {
         </div>
       </section>
 
-      {/* BRAND STORY */}
-      <section className="max-w-4xl mx-auto px-4 md:px-6 py-16 md:py-28 text-center animate-fade-up">
-        <SectionHeading eyebrow="OUR STORY" title="A Little Luxury in Every Gift" />
-        <p className="text-espresso/80 leading-relaxed text-base md:text-xl font-light">
-          LUNA MIA was born from a love of beautiful things and thoughtful gestures. Every hamper is curated with intention — elegant packaging, premium products, and a personal touch that turns a gift into a memory.
-        </p>
-        <Link to="/about" className="inline-block mt-8 md:mt-10 border-b border-chocolate text-chocolate pb-1 text-xs md:text-sm tracking-widest uppercase hover:text-champagne hover:border-champagne transition-colors">
-          Read Our Story
-        </Link>
+      {/* BRAND STORY - Editorial Layout */}
+      <section className="max-w-7xl mx-auto px-4 md:px-6 py-16 md:py-28 animate-fade-up">
+        <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div className="flex gap-4 md:gap-6">
+            {/* Arch Images (Using placeholder Unsplash images for now) */}
+            <img 
+              src="https://images.unsplash.com/photo-1549465220-1a8b9238cd48?q=80&w=600&auto=format&fit=crop" 
+              alt="Luxury Hampers" 
+              className="w-1/2 rounded-t-full rounded-b-2xl object-cover aspect-[3/4] shadow-xl"
+            />
+            <img 
+              src="https://images.unsplash.com/photo-1607344645866-009c320c5ab8?q=80&w=600&auto=format&fit=crop" 
+              alt="Details" 
+              className="w-1/2 rounded-t-full rounded-b-2xl object-cover aspect-[3/4] mt-12 shadow-xl"
+            />
+          </div>
+          <div className="text-center md:text-left">
+            <p className="text-champagne tracking-[0.3em] text-[10px] md:text-xs mb-3 font-medium uppercase">Our Story</p>
+            <h2 className="font-serif text-3xl md:text-5xl text-chocolate leading-[1.2] mb-6">
+              A Little Luxury in <br/> Every Gift
+            </h2>
+            <p className="text-espresso/70 leading-relaxed text-sm md:text-base font-light mb-8">
+              LUNA MIA was born from a love of beautiful things and thoughtful gestures. Every hamper is curated with intention — elegant packaging, premium products, and a personal touch that turns a gift into a memory.
+            </p>
+            <Link to="/about" className="inline-block border-b border-chocolate text-chocolate pb-1 text-xs md:text-sm tracking-widest uppercase hover:text-champagne hover:border-champagne transition-colors">
+              Read Our Story
+            </Link>
+          </div>
+        </div>
       </section>
 
       {/* GALLERY */}

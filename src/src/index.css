@@ -20,3 +20,18 @@
 .delay-100 { animation-delay: 200ms; }
 .delay-200 { animation-delay: 400ms; }
 .delay-300 { animation-delay: 600ms; }
+
+/* NEW: Marquee animation for the scrolling text strip */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Utility class to hide scrollbars if needed */
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
