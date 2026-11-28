@@ -44,21 +44,22 @@ export default function Home() {
           <div className="absolute inset-0 bg-gradient-to-br from-beige via-rose/40 to-champagne/30 animate-ken-burns" />
         )}
         
-        {/* Soft radial glow instead of heavy black overlay */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(48,37,31,0.7)_0%,rgba(48,37,31,0.2)_70%)]" />
+        {/* Soft radial glow */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(48,37,31,0.8)_0%,rgba(48,37,31,0.3)_80%)]" />
         
-        <div className="relative z-10 max-w-3xl mt-6 md:mt-10">
-          <p className="text-champagne tracking-[0.5em] text-[10px] md:text-xs mb-4 md:mb-6 animate-slide-up font-medium">
+        {/* Content with tighter mobile padding */}
+        <div className="relative z-10 max-w-3xl mt-6 md:mt-10 px-6">
+          <p className="text-champagne tracking-[0.4em] text-[10px] md:text-xs mb-4 md:mb-6 animate-slide-up font-medium">
             LUNA MIA
           </p>
-          <h1 className="font-serif text-3xl md:text-7xl text-cream leading-[1.2] md:leading-[1.1] animate-slide-up delay-100">
+          <h1 className="font-serif text-3xl md:text-7xl text-cream leading-[1.15] md:leading-[1.1] animate-slide-up delay-100">
             {content?.hero_heading || "Thoughtful Gifts. Beautiful Moments."}
           </h1>
-          <p className="text-cream/90 text-sm md:text-xl mt-4 md:mt-6 max-w-xl mx-auto font-light leading-relaxed animate-slide-up delay-200 px-4">
+          <p className="text-cream/90 text-sm md:text-xl mt-4 md:mt-6 max-w-sm md:max-w-xl mx-auto font-light leading-relaxed animate-slide-up delay-200">
             {content?.hero_subtext || "Curated luxury gift hampers, handcrafted with love for every celebration and everyday surprise."}
           </p>
-          <div className="mt-6 md:mt-10 animate-slide-up delay-300">
-            <Link to="/shop" className="group inline-block bg-champagne text-espresso pl-8 pr-6 py-3 md:pl-10 md:pr-8 md:py-4 rounded-full text-[11px] md:text-sm tracking-widest uppercase hover:bg-cream transition-all duration-300 shadow-xl hover:-translate-y-1 font-medium">
+          <div className="mt-8 md:mt-10 animate-slide-up delay-300">
+            <Link to="/shop" className="group inline-block bg-champagne text-espresso px-6 py-3 md:px-10 md:py-4 rounded-full text-[11px] md:text-sm tracking-widest uppercase hover:bg-cream transition-all duration-300 shadow-xl hover:-translate-y-1 font-medium">
               Explore Our Collection
               <span className="inline-block ml-2 group-hover:translate-x-1 transition-transform">→</span>
             </Link>
@@ -116,7 +117,6 @@ export default function Home() {
 
       {/* CUSTOM PROMO - Full Width Banner */}
       <section className="relative min-h-[400px] md:min-h-[600px] flex items-center animate-fade-up overflow-hidden">
-        {/* Background Image */}
         {content?.promo_image_url ? (
           <img 
             src={content.promo_image_url} 
@@ -127,10 +127,9 @@ export default function Home() {
           <div className="absolute inset-0 bg-chocolate" />
         )}
         
-        {/* Dark Gradient Overlay - Fades from left to right for text readability */}
+        {/* Dark Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-r from-espresso/95 via-espresso/70 to-transparent md:via-espresso/50" />
 
-        {/* Content Container */}
         <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 w-full py-12 md:py-16">
           <div className="max-w-lg">
             <p className="text-champagne tracking-[0.3em] text-[10px] md:text-xs mb-3 md:mb-4 font-medium uppercase">
@@ -143,11 +142,12 @@ export default function Home() {
               {content?.promo_text || "Personalise every detail — from the box to the message. Tell us the occasion and we'll curate something unforgettable."}
             </p>
             
+            {/* FIXED BUTTONS ALIGNMENT */}
             <div className="mt-6 md:mt-10 flex flex-col sm:flex-row gap-3 md:gap-4">
-              <Link to="/custom" className="bg-champagne text-espresso px-6 py-3 md:px-8 md:py-3.5 rounded-full text-[11px] md:text-sm tracking-widest uppercase hover:bg-cream transition shadow-xl hover:-translate-y-1 text-center font-medium">
+              <Link to="/custom" className="bg-champagne text-espresso px-6 py-3 md:px-8 md:py-3.5 rounded-full text-[11px] md:text-sm tracking-widest uppercase hover:bg-cream transition shadow-lg hover:-translate-y-1 text-center font-medium inline-block w-full sm:w-auto">
                 Learn More
               </Link>
-              <a href={generalEnquiryLink("Hi LUNA MIA! I'd like to discuss a custom hamper.")} className="border border-cream/50 text-cream px-6 py-3 md:px-8 md:py-3.5 rounded-full text-[11px] md:text-sm tracking-widest uppercase hover:bg-cream hover:text-chocolate transition text-center font-medium">
+              <a href={generalEnquiryLink("Hi LUNA MIA! I'd like to discuss a custom hamper.")} className="border border-cream/50 text-cream px-6 py-3 md:px-8 md:py-3.5 rounded-full text-[11px] md:text-sm tracking-widest uppercase hover:bg-cream hover:text-chocolate transition text-center font-medium inline-block w-full sm:w-auto">
                 Email Us
               </a>
             </div>
@@ -157,24 +157,27 @@ export default function Home() {
 
       {/* BRAND STORY - Editorial Layout */}
       <section className="max-w-7xl mx-auto px-4 md:px-6 py-16 md:py-28 animate-fade-up">
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          <div className="flex gap-4 md:gap-6">
-            {/* Arch Images (Using placeholder Unsplash images for now) */}
+        <div className="flex flex-col md:flex-row gap-8 md:gap-16 items-center">
+          
+          {/* Arch Images - Side by Side */}
+          <div className="w-full md:w-1/2 flex gap-3 md:gap-6 justify-center">
             <img 
               src="https://images.unsplash.com/photo-1549465220-1a8b9238cd48?q=80&w=600&auto=format&fit=crop" 
               alt="Luxury Hampers" 
-              className="w-1/2 rounded-t-full rounded-b-2xl object-cover aspect-[3/4] shadow-xl"
+              className="w-1/2 rounded-t-full rounded-b-2xl object-cover aspect-[3/4] shadow-lg"
             />
             <img 
               src="https://images.unsplash.com/photo-1607344645866-009c320c5ab8?q=80&w=600&auto=format&fit=crop" 
               alt="Details" 
-              className="w-1/2 rounded-t-full rounded-b-2xl object-cover aspect-[3/4] mt-12 shadow-xl"
+              className="w-1/2 rounded-t-full rounded-b-2xl object-cover aspect-[3/4] mt-8 shadow-lg"
             />
           </div>
-          <div className="text-center md:text-left">
+          
+          {/* Text */}
+          <div className="w-full md:w-1/2 text-center md:text-left">
             <p className="text-champagne tracking-[0.3em] text-[10px] md:text-xs mb-3 font-medium uppercase">Our Story</p>
             <h2 className="font-serif text-3xl md:text-5xl text-chocolate leading-[1.2] mb-6">
-              A Little Luxury in <br/> Every Gift
+              A Little Luxury in <br className="hidden md:block"/> Every Gift
             </h2>
             <p className="text-espresso/70 leading-relaxed text-sm md:text-base font-light mb-8">
               LUNA MIA was born from a love of beautiful things and thoughtful gestures. Every hamper is curated with intention — elegant packaging, premium products, and a personal touch that turns a gift into a memory.
